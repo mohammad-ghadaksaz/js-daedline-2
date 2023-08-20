@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To Do List</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #020617;
+      font-family: monospace;
+    }
+
+    .box {
+      width: 800px;
+      height: 450px;
+      /* background-color: #1e293b; */
+      background-color: #ffe100 !important;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0.9;
+    }
+
+    .title {
+      color: #000000;
+      font-size: 40px;
+      padding: 30px 0;
+    }
+
+    .inpBox {
+      width: 400px;
+      height: 100px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 16px;
+      justify-content: center;
+    }
+
+    #input-todo {
+      width: 250px;
+      height: 40px;
+      padding: 10px;
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      background-color: #000000;
+      border: 3px solid rgb(124, 9, 9);
+      color: #e8e8e8;
+      font-family: monospace;
+      font-size: 18px;
+    }
+
+    .add-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 40px;
+      text-decoration: none;
+      background-color: #020617;
+      border: 3px solid rgb(124, 9, 9);
+      color: #e9e9e9;
+      font-size: 16px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-family: monospace;
+      cursor: grab;
+    }
+
+    .alert {
+      color: #000000;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .todo-list {
+      width: 50%;
+      list-style: none;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      padding-left: 45px;
+      gap: 3px 0;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+    }
+
+    .todo-list::-webkit-scrollbar {
+      /* hide the scroll bar */
+      display: none;
+    }
+
+    .todo-list>li {
+      width: 70%;
+      height: 40px;
+      line-height: 40px;
+      background-color: #020617;
+      display: flex;
+      justify-content: space-between;
+      text-transform: capitalize;
+      align-items: center;
+      padding: 5px 10px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+
+    .event-btn {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      cursor: grabbing;
+      gap: 0 10px;
+    }
+
+    .event-btn>i {
+      display: block;
+      padding-top: 3px;
+    }
+
+    .event-btn>.check-btn {
+      display: block;
+      font-size: 20px;
+      color: #22c55e;
+    }
+
+    .event-btn>.remove-btn {
+      display: block;
+      font-size: 18px;
+      color: #dc2626;
+    }
+
+    .task-remove,
+    .task-check {
+      background-color: #020617;
+      color: #94a3b8;
+      padding: 10px;
+      border-radius: 6px;
+      position: fixed;
+      display: none;
+      font-size: 14px;
+      right: 35%;
+    }
+
+    .task-remove {
+      right: 32%;
+      top: 47%;
+    }
+
+    .task-check {
+      top: 47%;
+    }
+
+    @media screen and (max-width: 576px) {
+      .task-remove {
+        width: 128px;
+        top: 45%;
+        left: 2%;
+        font-size: 12px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="box">
+    <h2 class="title">To Do List</h2>
+    <div class="inpBox">
+      <input type="text" id="input-todo" />
+      <a href="#" class="add-btn">Add</a>
+    </div>
+    <div class="alert"></div>
+    <ul class="todo-list"></ul>
+
+    <!-- alert todo remove -->
+    <div class="task-remove">Task Removed</div>
+    <div class="task-check">Task Done</div>
+  </div>
+  <!-- js code  -->
+  <script>
+    let data = []
+    let myData = localStorage.getItem('mydata')
+    myData = JSON.parse(myData)
+    console.log(myData);
+    //
+
+    let inputToDo = document.querySelector("#input-todo");
+    let addBtn = document.querySelector(".add-btn");
+    let resultAlert = document.querySelector(".alert");
+    let alertToDoRemove = document.querySelector(".task-remove");
+    let alertToDoCheck = document.querySelector(".task-check");
+    let todoListItem = document.querySelector(".todo-list");
+    inputToDo.focus()
+    addBtn.addEventListener("click", () => {
+      if (inputToDo.value === "") {
+        let fillAlert = setTimeout(() => {
+          resultAlert.innerHTML = "Please dont leave the input blank";
+        }, 100);
+        setTimeout(() => {
+          resultAlert.innerHTML = "";
+        }, 2100);
+      } else {
+        let createLiTag = document.createElement("li");
+        createLiTag.innerHTML = `
+    <span contenteditable="true">${inputToDo.value}</span>
+    <span class='event-btn'><i class="bi bi-check check-btn"></i><i class="bi bi-trash remove-btn"></i></span>
+    `;
+        todoListItem.appendChild(createLiTag);
+        let checkToDo = document.querySelectorAll(".check-btn");
+        checkToDo.forEach((check) => {
+          check.addEventListener("click", (e) => {
+            e.target.parentElement.parentElement.remove();
+            setTimeout(() => {
+              alertToDoCheck.style.display = "block";
+            }, 200);
+            setTimeout(() => {
+              alertToDoCheck.style.display = "none";
+            }, 1000);
+          });
+        });
+        let removeToDo = document.querySelectorAll(".remove-btn");
+        removeToDo.forEach((remove) => {
+          remove.addEventListener("click", (e) => {
+            e.target.parentElement.parentElement.remove();
+            setTimeout(() => {
+              alertToDoRemove.style.display = "block";
+            }, 200);
+            setTimeout(() => {
+              alertToDoRemove.style.display = "none";
+            }, 1000);
+          });
+        });
+      }
+      inputToDo.value = "";
+      inputToDo.focus();
+    });
+
+  </script>
+</body>
+
+</html>
