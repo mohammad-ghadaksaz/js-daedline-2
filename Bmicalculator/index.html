@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <!-- tailwind cdn  -->
+      <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="master.css">
+</head>
+<body class="w-full min-h-[100vh] flex flex-wrap justify-center items-center ">
+    <div class="pic">
+        <figure>
+            <img src="—Pngtree—fitness man_5933194.png" alt="">
+        </figure>
+    </div>
+    <div class="pic2">
+        <figure>
+            <img src="clipart810096.png" alt="">
+        </figure>
+    </div>
+ <div class="box w-[60%] h-[60vh] flex flex-wrap justify-center p-1 items-center bg-sky-600 ">
+     <h3 class="w-[30%] flex flex-wrap justify-center items-center font-bold ">Height :</h3><input type="number" name="" id="height" placeholder="Height(cm)" class="w-[60%] p-2 h-[40px] border m-1">
+     <h3 class="w-[30%] flex flex-wrap justify-center items-center font-bold ">Wight :</h3><input type="number" name="" id="weight" placeholder="Weight(Kg)" class="w-[60%] p-2 h-[40px] border m-1">
+    <h2 class="w-full flex-wrap flex justify-center items-center text-xxl font-bold BMI">Your BMI : <span class="m-1"> - </span></h2>
+
+    <button class="w-[80px] h-[40px] bg-red-600 text-white ">Show BMI</button>
+ </div>   
+
+
+
+ <script>
+    document.getElementsByTagName('input')[0].focus()
+    document.getElementsByTagName('button')[0].addEventListener('click' , ()=>{
+        let _height = document.getElementById('height').value
+        let _weight = document.getElementById('weight').value
+        console.log(_height , _weight);
+        if(_height==null || _weight==''){
+            alert("Please enter the height and weight")
+        }else{
+            _height = _height/100
+            document.getElementsByTagName('span')[0].innerHTML =Math.floor(_weight/(_height*_height))
+            if((_weight/(_height*_height))>30){
+                let _h5 = document.createElement('h5')
+                document.getElementsByClassName('box')[0].appendChild(_h5)
+                _h5.innerHTML='YOU ARE FAT, WORKOUT !'
+                _h5.style.color='red'
+                _h5.style.fontSize='40px'
+                _h5.style.width='100%'
+
+            }else if((_weight/(_height*_height))<25){
+                let _h5 = document.createElement('h5');
+                document.getElementsByClassName('box')[0].appendChild(_h5);
+                _h5.innerHTML ='You are Fit ,thats good !';
+                _h5.style.color='greenyellow' ;
+                _h5.style.fontSize='40px'
+                _h5.style.width='100%';
+            }else{
+                let _h5 = document.createElement('h5');
+                document.getElementsByClassName('box')[0].appendChild(_h5);
+                _h5.innerHTML ='You are not fat but you should workout';
+                _h5.style.color='yellow' ;
+                _h5.style.fontSize='40px'
+                _h5.style.width='100%'; 
+            }
+        }
+        setInterval(() => {
+            location.reload()
+        }, 3200);
+    })
+ </script>
+</body>
+</html>
